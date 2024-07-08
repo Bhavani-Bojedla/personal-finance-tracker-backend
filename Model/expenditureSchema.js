@@ -3,7 +3,7 @@ const expenditureSchema=mongoose.Schema(
     {
         categories:{
             type:String,
-            required:true,
+            required:true, 
         }
        
     },{
