@@ -1,8 +1,8 @@
-const incomes=require("../Model/incomesSchema");
+
+const income=require("../Model/incomeSchema");
 
 const createIncome=async(req,res)=>{
-    console.log(req);
-    const newincome=new incomes(req.body);
+    const newincome=new income(req.body);
     try{
     await newincome.save();
     res.status(200).json({ 
@@ -14,7 +14,7 @@ const createIncome=async(req,res)=>{
     }
 }
 const getIncomes= async(req,res)=>{
-    const incomes=await incomes.find();
+    const incomes=await income.find();
     try{
       res.status(200).json(incomes);
     }
@@ -22,4 +22,13 @@ const getIncomes= async(req,res)=>{
       console.log(e);
     }
   }
-module.exports={createIncome,getIncomes}
+  const deleteIncome = async (req, res) => {
+    const id = req.params.id;
+    try {
+      const deletedIncome = await income.findByIdAndDelete(id);
+      res.status(200).json(deletedIncome);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+module.exports={createIncome,getIncomes,deleteIncome}

@@ -1,12 +1,11 @@
 const expenditure = require("../Model/expenditureSchema");
 
 const createExpenditure = async (req, res) => {
-  console.log(req);
   const newexpenditure = new expenditure(req.body);
   try {
     await newexpenditure.save();
     res.status(200).json({
-      message: "income created successfully",
+      message: "Expenditure created successfully",
     });
     }  
     catch (e) {
@@ -14,12 +13,21 @@ const createExpenditure = async (req, res) => {
     }
 };
 const getExpenditure=async(req,res)=>{
-    const expenditure=await expenditure.find();
+    const expenditures=await expenditure.find();
     try{
-        res.status(200).json(expenditure);
+        res.status(200).json(expenditures);
       }
       catch(e){
-        console.log(e);
+        res.status(500).json({ message: e.message });
       }
 }
-module.exports={createExpenditure,getExpenditure}
+const deleteExpenditure = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const deletedExpenditure = await expenditure.findByIdAndDelete(id);
+    res.status(200).json(deletedExpenditure);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+module.exports={createExpenditure,getExpenditure,deleteExpenditure}

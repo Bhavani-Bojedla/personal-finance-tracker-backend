@@ -1,10 +1,26 @@
 const mongoose=require("mongoose");
 const expenditureSchema=mongoose.Schema(
     {
-        categories:{
-            type:String,
-            required:true, 
-        }
+        ExpenditureText: {
+            type: String,
+            required: true,
+            // trim: true,
+          },
+          ExpenditureCost: {
+            type: Number,
+            required: true,
+            // trim: true,
+          },
+          ExpenditureDate: {
+            type: Date,
+            required: true,
+            // trim: true,
+          },
+          ExpenditureCategory: {
+            type: String,
+            required: true,
+            // trim: true,
+          },
        
     },{
         Collection:"expenditure"
