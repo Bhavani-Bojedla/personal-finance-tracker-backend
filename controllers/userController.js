@@ -1,14 +1,5 @@
 const User = require("../Model/userSchema");
-
-
-const getUser = async (req, res) => {
-  const users = await User.find();
-  try {
-    res.status(200).json(users);
-  } catch (e) {
-    console.log(e);
-  }
-};
+// const loginsSchema=require("../Model/loginsSchema")
 const createUser = async (req, res) => {
   const newUser = req.body;
 
@@ -38,30 +29,37 @@ const createUser = async (req, res) => {
 };
 
 
-// const getLogin = async (req, res) => {
-//   const users = await User.find();
-//   try {
-//     res.status(200).json(users);
-//   } catch (e) {
-//     console.log(e);
-//   }
-// };
-
-
 const checkUser = async (req, res) => {
   const { Email, Password } = req.body;
-  User.findOne({ Email: Email }).then((user) => {
+  try {
+    const user = await User.findOne({ Email: Email });
     if (user) {
-      if (user.Password == Password) {
-        // const token = jwt.sign({ _id: user._id }, "your_jwt_secret");
-        res.json({ message: "success" });
+      if (user.Password === Password) {
+        
+        res.json({ message: "success",userId:user._id });
       } else {
         res.status(400).json("The password is incorrect");
       }
     } else {
       res.status(400).json("No record existed");
     }
-  });
+  } catch (error) { 
+    res.status(500).json(error.message);
+  }
 };
+
+const getUser = async (req, res) => { 
+  // const { id } = req.params.id; 
+  // console.log(id);
+  const user = await User.find();
+  try {
+   
+    res.status(200).json(user);
+  } catch (e) {
+    console.log(e); 
+  }
+};
+
+
 
 module.exports = { createUser, getUser, checkUser};

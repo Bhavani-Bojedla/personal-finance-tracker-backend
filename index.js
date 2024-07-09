@@ -3,7 +3,6 @@ const mongoose=require("mongoose");
 const cors=require("cors");
 const app = express()
 const userRoutes=require("./routes/userRoutes");
-const loginRoutes=require("./routes/loginRoutes");
 const incomesRoutes=require("./routes/incomesRoutes");
 const expenditureRoutes=require("./routes/expenditureRoutes");
 const dbConnect=async()=>{
@@ -24,7 +23,6 @@ app.use(cors());
 app.use("/expenditure",expenditureRoutes);
 app.use("/income",incomesRoutes);
 app.use("/users",userRoutes);
-app.use("/login",loginRoutes);
 
 app.get('/', (req, res) => {
     res.send("hello finance")
