@@ -20,7 +20,7 @@ const createUser = async (req, res) => {
       Email: newUser.Email,
       Password: newUser.Password,
     });
-
+ 
     await user.save();
     res.status(200).json({ message: "User created successfully" });
   } catch (e) {
@@ -36,7 +36,7 @@ const checkUser = async (req, res) => {
     if (user) {
       if (user.Password === Password) {
         
-        res.json({ message: "success",userId:user._id });
+        res.json({ message: "success" });
       } else {
         res.status(400).json("The password is incorrect");
       }
