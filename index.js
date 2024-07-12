@@ -35,7 +35,7 @@ app.use("/income", incomesRoutes);
 app.use("/users", userRoutes);
 
 app.get("/", (req, res) => {
-  res.send("hello finance");
+  res.send("hello cors");
 });
 app.listen(4000, () => {
   dbConnect();
