@@ -12,13 +12,19 @@ const dbConnect = async () => {
       //  { useNewUrlParser: true, useUnifiedTopology: true }
     );
     console.log("Database Connected");
-  } catch (e) {
-    console.log("error in db connection");
-    console.log(e);
+  } catch (e) {  
+    console.log("error in db connection"); 
+    console.log(e);   
   }
-};
+}; 
 app.use(express.json());
-app.use(cors());
+app.use( 
+  cors({ 
+    origin: ["https://personal-finance-tracker-eight.vercel.app/"],
+    method: ["POST", "GET", "DELETE"],
+    credentials: true,
+  })
+);
 
 app.use("/expenditure", expenditureRoutes);
 app.use("/income", incomesRoutes);
