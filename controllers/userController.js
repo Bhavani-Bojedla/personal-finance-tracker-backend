@@ -1,6 +1,4 @@
 const User = require("../Model/userSchema");
-const jwt = require("jsonwebtoken");
-const jwtpassword="123456";
 // const loginsSchema=require("../Model/loginsSchema")
 const createUser = async (req, res) => {
   const newUser = req.body;
