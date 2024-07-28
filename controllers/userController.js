@@ -1,4 +1,6 @@
 const User = require("../Model/userSchema");
+const jwt = require("jsonwebtoken");
+const jwtpassword="123456";
 // const loginsSchema=require("../Model/loginsSchema")
 const createUser = async (req, res) => {
   const newUser = req.body;
@@ -13,7 +15,6 @@ const createUser = async (req, res) => {
     if (usernameExists) {
       return res.status(400).json({ message: "User with this username already exists" });
     }
-    
     const user = new User({
       Name: newUser.Name,
       Username: newUser.Username,
@@ -60,6 +61,29 @@ const getUser = async (req, res) => {
   }
 };
 
+// const getUser = async (req, res) => { 
+//   const token=req.headers.authorization;
+//   try{
+//     const decode=jwt.verify(token,jwtpassword);
+//     const username=decode.username;
+//     res.json({
+//       users:user.filter(function(value){
+//         if(value.username==username){
+//           return true;
+//         }
+//         else{
+//           return false;
+//         }
+//       })
+//     })
+//   }
+//   catch(e){
+//     return res.status(403).json({
+//       msg:"invalid token"
+//   });
+//   }
+  
+// };
 
 
 module.exports = { createUser, getUser, checkUser};

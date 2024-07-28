@@ -8,7 +8,7 @@ const expenditureRoutes = require("./routes/expenditureRoutes");
 const dbConnect = async () => {
   try {
     await mongoose.connect(
-      "mongodb+srv://Bhavani-Bojedla:Bhavani123@cluster1.34vtstj.mongodb.net/FinanceTracker"
+      "mongodb+srv://admin:Py6CUFdbc2Rs7H1B@cluster1.34vtstj.mongodb.net/FinanceTracker"
       //  { useNewUrlParser: true, useUnifiedTopology: true }
     );
     console.log("Database Connected");
@@ -18,18 +18,9 @@ const dbConnect = async () => {
   }
 };
 app.use(express.json());
-app.use(cors());
-app.use(function (req, res, next) {
-  //Enabling CORS
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, x-client-key, x-client-token, x-client-secret, Authorization"
-  );
-  next();
-});
-
+app.use(cors({
+  origin:"*"
+}));
 app.use("/expenditure", expenditureRoutes);
 app.use("/income", incomesRoutes);
 app.use("/users", userRoutes);
