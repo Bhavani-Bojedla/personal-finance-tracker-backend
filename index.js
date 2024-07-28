@@ -2,21 +2,20 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const app = express();
+// const { db } = require("./db/db");
 const userRoutes = require("./routes/userRoutes");
 const incomesRoutes = require("./routes/incomesRoutes");
 const expenditureRoutes = require("./routes/expenditureRoutes");
 const dbConnect = async () => {
   try {
-    await mongoose.connect(
-      "mongodb+srv://admin:Py6CUFdbc2Rs7H1B@cluster1.34vtstj.mongodb.net/FinanceTracker"
-      //  { useNewUrlParser: true, useUnifiedTopology: true }
-    );
+    process.env.MONGO_URL;
     console.log("Database Connected");
   } catch (e) {
     console.log("error in db connection");
     console.log(e);
   }
 };
+
 app.use(express.json());
 app.use(cors({
   origin:"*"
