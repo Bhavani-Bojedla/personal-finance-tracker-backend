@@ -20,6 +20,14 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    income:[{
+      type:mongoose.Types.ObjectId,
+      ref:"income"
+    }],
+    expenditure:[{
+      type:mongoose.Types.ObjectId,
+      ref:"expenditure"
+    }]
   },
   {
     Collection: "users",

@@ -13,8 +13,13 @@ const incomeSchema=mongoose.Schema(
         IncomeDate:{
             type:Date,
             required:true
-        }
+        },
+        users:[{
+            type:mongoose.Types.ObjectId,
+            ref:"users"
+        }]
     },{
+        timestamps: true,
         collection:"income"
     }
 )

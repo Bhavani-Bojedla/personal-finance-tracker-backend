@@ -21,8 +21,13 @@ const expenditureSchema=mongoose.Schema(
             required: true,
             // trim: true,
           },
+          users:[{
+            type:mongoose.Types.ObjectId,
+            ref:"users"
+        }]
        
     },{
+      timestamps: true,
         Collection:"expenditure"
     }
 );

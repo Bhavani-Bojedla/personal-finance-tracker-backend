@@ -1,23 +1,24 @@
 const User = require("../Model/userSchema");
-// const loginsSchema=require("../Model/loginsSchema")
+const bcrypt=require("bcryptjs");
 const createUser = async (req, res) => {
-  const newUser = req.body;
+  const {Name,Username,Email,Password}= req.body;
 
   try {
-    const emailExists = await User.findOne({ Email: newUser.Email });
+    const emailExists = await User.findOne({ Email });
     if (emailExists) {
       return res.status(400).json({ message: "User with this email already exists" });
     }
   
-    const usernameExists = await User.findOne({ Username: newUser.Username });
+    const usernameExists = await User.findOne({ Username });
     if (usernameExists) {
       return res.status(400).json({ message: "User with this username already exists" });
     }
+    const hashpassword=bcrypt.hashSync(Password);
     const user = new User({
-      Name: newUser.Name,
-      Username: newUser.Username,
-      Email: newUser.Email,
-      Password: newUser.Password,
+      Name,
+      Username,
+      Email,
+      Password: hashpassword,
     });
  
     await user.save();
@@ -29,18 +30,24 @@ const createUser = async (req, res) => {
 
 
 const checkUser = async (req, res) => {
-  const { Email, Password } = req.body;
+  
   try {
+    const { Email, Password } = req.body;
+    if (!Email || !Password) {
+      return res.status(400).json({ message: "Please provide all required fields" });
+    }
     const user = await User.findOne({ Email: Email });
-    if (user) {
-      if (user.Password === Password) {
-        
-        res.json({ message: "success" });
-      } else {
-        res.status(400).json("The password is incorrect");
-      }
+    if (!user) {
+      return res.status(400).json({ message: "No record existed" });
     } else {
-      res.status(400).json("No record existed");
+      const isValidPassword = bcrypt.compareSync(Password, user.Password);
+      if (!isValidPassword) {
+        return res.status(400).json({ message: "The password is incorrect" });
+      }
+      const {...others}=user._doc; 
+      res.status(200).json({others,
+        msg:"success" 
+      });
     }
   } catch (error) { 
     res.status(500).json(error.message);
@@ -48,40 +55,15 @@ const checkUser = async (req, res) => {
 };
 
 const getUser = async (req, res) => { 
-  // const { id } = req.params.id; 
-  // console.log(id);
-  const user = await User.find();
-  try {
-   
-    res.status(200).json(user);
-  } catch (e) {
-    console.log(e); 
-  }
-};
 
-// const getUser = async (req, res) => { 
-//   const token=req.headers.authorization;
-//   try{
-//     const decode=jwt.verify(token,jwtpassword);
-//     const username=decode.username;
-//     res.json({
-//       users:user.filter(function(value){
-//         if(value.username==username){
-//           return true;
-//         }
-//         else{
-//           return false;
-//         }
-//       })
-//     })
-//   }
-//   catch(e){
-//     return res.status(403).json({
-//       msg:"invalid token"
-//   });
-//   }
-  
-// };
+  const user = await User.findById(req.params.id);
+  if(user){
+    res.status(200).json({user:user});
+  }
+  else{ 
+    res.status(200).json({msg:"no user"});
+   }
+};
 
 
 module.exports = { createUser, getUser, checkUser};
