@@ -50,7 +50,7 @@ const checkUser = async (req, res) => {
       });
     }
   } catch (error) { 
-    res.status(500).json(error.message);
+    res.status(500).json({ message: e.message });
   }
 };
 
@@ -66,4 +66,26 @@ const getUser = async (req, res) => {
 };
 
 
-module.exports = { createUser, getUser, checkUser};
+const updateUser = async (req, res) => {
+  try {
+    const { Password, ...rest } = req.body;
+    const updateData = { ...rest };
+
+    if (Password && Password.trim() !== "") {
+      updateData.Password = bcrypt.hashSync(Password, 10);
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.id,
+      { $set: updateData },
+      { new: true }
+    );
+
+    res.status(200).json({ user: updatedUser });
+  } catch (err) {
+    res.status(500).json({ message: "Error updating user" });
+  }
+};
+
+
+module.exports = { createUser, getUser, checkUser, updateUser};
